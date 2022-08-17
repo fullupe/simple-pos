@@ -1,9 +1,14 @@
 import React from 'react'
+import navbar from '../components/navbar'
 
-function profile() {
+function Profile() {
   return (
+    <>
     <div>profile</div>
+
+    <navbar/>
+    </>
   )
 }
 
-export default profile
+export default Profile

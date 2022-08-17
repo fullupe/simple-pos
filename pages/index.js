@@ -11,6 +11,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+
+
+      {/* george */}
+
       <p className="text-red-500">hello world!</p>
     </div>
   )

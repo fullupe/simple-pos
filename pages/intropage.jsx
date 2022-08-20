@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../components/Button";
-const Intropage = ({ name }) => {
+const Intropage = () => {
   return (
     <>
       <div className="flex justify-center items-centter min-h-screen w-full bg-blue-400">

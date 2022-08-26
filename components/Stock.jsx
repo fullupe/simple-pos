@@ -1,120 +1,43 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import Modal from './Modal';
-
-
+import ModalUpdate from "./ModalUpdate"
+import Localbase from 'localbase'
 
 function Stock() {
 
-    let list =[
-        {
-        id:1,
-        productName:"Lenovo",
-        brand:"Lenovo 2016",
-        description:"butter and cocoa",
-        color:"brown",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:2,
-        productName:"Apple Laptop",
-        brand:"Mac",
-        description:"Apple MacBook Pro 17",
-        color:"silver",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:3,
-        productName:"Hp Laptop",
-        brand:"Hp 2018 pro",
-        description:"butter and cocoa",
-        color:"brown",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:4,
-        productName:"Dell",
-        brand:"Dell slim Pro 17",
-        description:"butter and cocoa",
-        color:"brown",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:5,
-        productName:"Toshiba",
-        brand:"satelite",
-        description:"butter and cocoa",
-        color:"black",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:6,
-        productName:"Toshiba",
-        brand:"satelite",
-        description:"butter and cocoa",
-        color:"black",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:7,
-        productName:"Toshiba",
-        brand:"satelite",
-        description:"butter and cocoa",
-        color:"black",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:8,
-        productName:"Toshiba",
-        brand:"satelite",
-        description:"butter and cocoa",
-        color:"black",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:9,
-        productName:"Toshiba",
-        brand:"satelite",
-        description:"butter and cocoa",
-        color:"black",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:10,
-        productName:"Toshiba",
-        brand:"satelite",
-        description:"butter and cocoa",
-        color:"black",
-        price:100,
-        qnt:1000
-    },
-        {
-        id:11,
-        productName:"Toshiba",
-        brand:"satelite",
-        description:"butter and cocoa",
-        color:"black",
-        price:100,
-        qnt:1000
-    },
-]
+const [stockList, setStockList] = useState([])
+const [doneDeleted, setdoneDeleted] = useState(false)
+const [targetId, settargetId] = useState()
+
+
+    let db = new Localbase('db')
+    useEffect(() => {
+        db.collection('stock').get().then(stock => {
+            setStockList(stock) 
+          })
+    }, [doneDeleted])
+
+ 
 
     const deleteItem=(id)=>{
        console.log(id)
+       db.collection('stock').doc({id:id }).delete().then(
+
+           setdoneDeleted(!doneDeleted)
+       )
     }
+
     const submit=(e)=>{
         e.preventDefault()
     }
+    const targetIdFunction = (id)=>{
+        //settargetId(id)
+
+        console.log(id)
+    }
+
   return (
     <div className="w-[80%] h-[60%] bg-gray-200 shadow-lg rounded-lg p-4 space-y-2">
         <div onSubmit={(e)=>submit(e)} className="flex justify-between items-center">
@@ -130,7 +53,7 @@ function Stock() {
 
         <div className="w-full h-[90%] bg-gray-100 rounded-sm overflow-x-auto relative">
 
-            <table className="w-full text-sm text-left text-gray-500 overflow-y-scroll scrollbar-hide ">
+            <table className="w-full text-sm text-left text-gray-500 ">
 
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr>
@@ -151,40 +74,44 @@ function Stock() {
                     Price
                 </th>
                 <th scope="col" className="py-3 px-6">
-                    stock-Qnty
+                    stock-Qnt
                 </th>
                 <th scope="col" className="py-3 px-6">
                     Action
                 </th>
             </tr>
         </thead>
-        <tbody className=" overflow-y-scrolls scrollbar-hided">
-            {list.map(({id,productName, qnt,brand,description,price,color,})=>(
+        <tbody className=" overflow-y-scroll scrollbar-y-hide">
+            {stockList?.map(({id,productName,brandName,price,stockQnty,description,colour}) =>(
 
-        <tr key={id} className="bg-white border-b ">
+        <tr key={id} className="bg-white border-b transition-all duration-200 ease-in-out ">
                
                 <td className="py-4 px-6">
                 {productName}
                 </td>
 
                 <td className="py-4 px-6">
-                    {brand}
+                    {brandName}
                 </td>
                 <td className="py-4 px-6">
                     {description}
                 </td>
                 <td className="py-4 px-6">
-                    {color}
+                    {colour}
                 </td>
                 <td className="py-4 px-6">
                     ${price}
                 </td>
                 <td className="py-4 px-6">
-                    {qnt}
+                    {stockQnty}
                 </td>
                 <td className="py-4 px-4 flex space-x-2 justify-center items-center ">
-                   <FiEdit className="text-red-900"/>
-                   <AiOutlineDelete onClick={()=>deleteItem(id)} className="text-red-900"/>
+                   {/* <FiEdit className="text-red-900"/> */}
+                   <div onClick={()=>targetIdFunction(id)}>
+                   <ModalUpdate targetId={id} productName={productName} brandName={brandName} price={price} stockQnty={stockQnty} description={description} colour={colour}  />
+                    </div> 
+
+                   <AiOutlineDelete onClick={()=>deleteItem(id)} className="text-red-900 cursor-pointer"/>
                    
                 </td>
                 
@@ -207,5 +134,7 @@ function Stock() {
     </div>
   )
 }
+
+
 
 export default Stock

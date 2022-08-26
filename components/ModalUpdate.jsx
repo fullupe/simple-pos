@@ -1,17 +1,16 @@
 import React,{useState,useEffect} from 'react'
-//import {AdjustmentsIcon } from '@heroicons/react/solid';
-import { GiSettingsKnobs } from "react-icons/gi";
+
+import { FiEdit } from "react-icons/fi";
 
 import { useRouter } from "next/router";
 import { useForm,  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import Script from "next/script";
-import { Head } from 'next/document';
+
 
 import Localbase from 'localbase'
-import { v4 as uuidv4 } from 'uuid';
+
 
 
 const schema = yup.object().shape({
@@ -25,7 +24,7 @@ const schema = yup.object().shape({
 });
 
 
-function Modal() {
+function Modal({targetId,productName,brandName,price,stockQnty,description,colour}) {
   
   
   let db = new Localbase('db')
@@ -38,12 +37,26 @@ function Modal() {
  
   const router = useRouter();
 
+
+
+const preloadvalues={
+  productName,
+  brandName,
+  price,
+  stockQnty,
+  description,
+  colour,
+
+}
+
+
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
   } = useForm({
+    defaultValues:preloadvalues,
     resolver: yupResolver(schema),
   });
 
@@ -66,24 +79,16 @@ function Modal() {
     
 
     const submitData =(data)=>{
-      // console.log(data)
-      if(LreadyInStock){
-       
-       db.collection('stock').add({
-        id:uuidv4(),
+      
+      db.collection('stock').doc({ id: targetId }).update({
           productName:data.productName,
           brandName:data.brandName,
           description:data.description,
           colour:data.colour,
           price:data.price,
           stockQnty:data.stockQnty,
-
       })
-      }else{
-        db.collection('stock').set([
-            ...LreadyInStock,addStock,
-            ])
-      }
+
       reset({
         productName:"",
         brandName:"",
@@ -99,17 +104,14 @@ function Modal() {
 
     }
 
-  
-   
-   
 
   return (
     <div >
 
 
 {/* <GiSettingsKnobs onClick={toggleModal}   className="w-8 h-8 text-red-500 bg-white rounded-lg p-1 cursor-pointer"/> */}
-<button onClick={toggleModal}   className=" bg-white border-emerald-300 p-2 rounded-lg hover:bg-blue-200 cursor-pointer">+ Add Items</button>
-        
+{/* <button onClick={toggleModal}   className=" bg-white border-emerald-300 p-2 rounded-lg hover:bg-blue-200 cursor-pointer">+ Add Items</button> */}
+<FiEdit onClick={toggleModal}  className="text-red-600 cursor-pointer"/>    
         {/* <Head>
         <title>Create Next App</title>
       </Head> */}
@@ -157,7 +159,7 @@ function Modal() {
           rounded-t
         "
       >
-        <h3 className="text-2xl font-semibold text-gray-500 italic">Add New Stock</h3>
+        <h3 className="text-2xl font-semibold text-gray-500 italic">Update Stock</h3>
         
       </div>
 

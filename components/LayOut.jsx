@@ -5,7 +5,7 @@ import Head from 'next/head'
 
 function LayOut({children}) {
   return (
-    <div>
+    <div className="flex flex-col">
         <Head>
         <title>simple pos</title>
       </Head>

@@ -105,14 +105,14 @@ const [targetId, settargetId] = useState()
                 <td className="py-4 px-6">
                     {stockQnty}
                 </td>
-                <td className="py-4 px-4 flex space-x-2 justify-center items-center ">
+                <td className="py-4 px-4 flex space-x-3 justify-center items-center ">
                    {/* <FiEdit className="text-red-900"/> */}
-                   <div onClick={()=>targetIdFunction(id)}>
+                   <div onClick={()=>targetIdFunction(id)} className="bg-orange-200 p-2 rounded-full items-center flex justify-center ">
                    <ModalUpdate targetId={id} productName={productName} brandName={brandName} price={price} stockQnty={stockQnty} description={description} colour={colour}  />
                     </div> 
-
-                   <AiOutlineDelete onClick={()=>deleteItem(id)} className="text-red-900 cursor-pointer"/>
-                   
+                    <div className="bg-orange-200 p-2 rounded-full items-center flex justify-center">
+                   <AiOutlineDelete onClick={()=>deleteItem(id)} className="text-red-600 cursor-pointer"/>
+                   </div>
                 </td>
                 
             </tr>

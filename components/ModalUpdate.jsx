@@ -111,7 +111,7 @@ const preloadvalues={
 
 {/* <GiSettingsKnobs onClick={toggleModal}   className="w-8 h-8 text-red-500 bg-white rounded-lg p-1 cursor-pointer"/> */}
 {/* <button onClick={toggleModal}   className=" bg-white border-emerald-300 p-2 rounded-lg hover:bg-blue-200 cursor-pointer">+ Add Items</button> */}
-<FiEdit onClick={toggleModal}  className="text-red-900 cursor-pointer"/>    
+<FiEdit onClick={toggleModal}  className="text-red-600 cursor-pointer"/>    
         {/* <Head>
         <title>Create Next App</title>
       </Head> */}
